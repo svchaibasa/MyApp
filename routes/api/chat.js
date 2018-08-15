@@ -96,11 +96,6 @@ router.post('/startmsg', async (req, res) => {
               clientname : req.body.clientname
           });
 
-
-
-
-
-
             newChat
             .save()
             .then(Chat => res.json(Chat.chat_msg))
@@ -108,17 +103,68 @@ router.post('/startmsg', async (req, res) => {
           //  .io.emit("newChat", Chat)
             .catch(err => console.log(err));
 
-
-
       }
-
-
-
 
         })
           .catch(err => res.status(404).json({chat: 'There are no Client & Agent'}));
         });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // @route  fetch api/chat/fetchmsg
+        // @desc   fetch chatMsg
+        // @access public
+        // user_id will be considered as app_id for testing
+
+        router.post('/fetchmsg', async (req, res) => {
+
+          // const { errors, isValid } = validateChat2Input(req.body);
+          //
+          // // Check Validation
+          // if(!isValid) {
+          //   // If any errors, send 400 with errors object
+          //   return res.status(400).json(errors);
+          // }
+
+
+          // Search for user id and customeremail
+
+            Chat.findOne({ $and: [ { customeremail: req.body.customeremail }, {user: req.body.user_id}]})
+            .then(chat => {
+
+
+              if(!chat){
+                  // not found
+                  errors.customeremail = 'Previous Chat not found!';
+                  res.status(400).json(errors);
+              }
+
+              if(chat){
+                // found
+                // Start Chat
+                res.json(chat.chat_msg);
+
+              }
+
+                })
+                  .catch(err => res.status(404).json({chat: 'Admin or Client not found!'}));
+                });
 
 
 
