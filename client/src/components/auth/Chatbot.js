@@ -50,6 +50,7 @@ class Chatbot extends Component {
           errors:{},
           chattt:[],
           user_id:'',
+          flag:0,
           show:true
         };
         this.onChange = this.onChange.bind(this);
@@ -67,7 +68,6 @@ class Chatbot extends Component {
 
 
 
-
       onSubmit(e){
         e.preventDefault();
 
@@ -78,14 +78,13 @@ class Chatbot extends Component {
             clientname: this.state.clientname,
             chatmsg: this.state.chatmsg
 
+
           };
           //console.log(newMsg);
           axios
-
           .post('/api/chat/startmsg', newMsg)
-
           .then(res => {
-              this.setState({chattt: res.data, chatmsg:'', show:false})
+              this.setState({chattt: res.data, chatmsg:'', show:false, flag: 1})
 
           })
           //.then(res => console.log(res.data))
@@ -94,19 +93,33 @@ class Chatbot extends Component {
           .catch(err => this.setState({errors: err.response.data}));
 
 
-          this.setState({
-            //customeremail: '',
-            //clientname: ''
-            //chatmsg:'',
-          //  show:false
-          });
-
-
-
-
-
-
       }
+
+
+
+
+      componentDidUpdate() {
+                const newMsg = {
+                  user_id: this.props.app_id,
+                //  user_id:"5b5454d7079bad399cbe72ba", // User Id will be considered as app_id for initial testing
+                  customeremail: this.state.customeremail
+                //  clientname: this.state.clientname,
+                //  chatmsg: this.state.chatmsg
+                };
+                //console.log(newMsg);
+          if((this.state.flag) === 1){
+                axios
+                .post('/api/chat/fetchmsg', newMsg)
+                .then(res => {
+                    this.setState({chattt: res.data, show:false})
+                })
+                //.then(res => console.log(res.data))
+                //.catch(err => console.log({errors: err.response.data}));
+                .catch(err => this.setState({errors: err.response.data}));
+
+              }
+      }
+
 
 
 
@@ -129,6 +142,7 @@ class Chatbot extends Component {
 
 
         <div className="mainAreaChat">
+
 
 
                 {this.state.chattt.map(function(message, i) {
@@ -172,7 +186,6 @@ class Chatbot extends Component {
 
 
           <form className="inputPanel" noValidate onSubmit={this.onSubmit}>
-
 
 
           { this.state.show &&
