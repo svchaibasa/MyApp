@@ -15,7 +15,9 @@ class AdminDashboard extends Component {
       clist:[],
       cchat:[],
       data:[],
-      customeremail: 'svchaibasa@gmail.com'
+      flag:0,
+      customeremail: '',
+      chatmsg:''
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -31,14 +33,7 @@ class AdminDashboard extends Component {
   handleClick(param, e) {
     // console.log("Parameter", param);
     // console.log("Event", e);
-    this.setState({ customeremail: param });
-
-
-
-
-
-
-
+    this.setState({ customeremail: param, flag:1});
   }
 
 
@@ -54,46 +49,23 @@ componentDidMount() {
 }
 
 
-
-  componentWillMount() {
-
-          const getChat = {
-            customeremail: this.state.customeremail
-            //customeremail: "svchaibasa@gmail.comm"
-          };
-          //console.log(getChat);
-          axios
-          .post('/api/adminchat/getclient', getChat)
-
-          .then(res => {
-              this.setState({cchat: res.data})
-          })
-          .catch(err => this.setState({errors: err.response.data}));
-
-      }
-
-
-
-
-      componentDidUpdate() {
-
-              const getChat = {
-                customeremail: this.state.customeremail
-                //customeremail: "svchaibasa@gmail.comm"
-              };
-              //console.log(getChat);
-              axios
-              .post('/api/adminchat/getclient', getChat)
-
-              .then(res => {
-                  this.setState({cchat: res.data})
-              })
-              .catch(err => this.setState({errors: err.response.data}));
-
-          }
-
-
-
+  //
+  // componentWillMount() {
+  //
+  //         const getChat = {
+  //           customeremail: this.state.customeremail
+  //           //customeremail: "svchaibasa@gmail.comm"
+  //         };
+  //         //console.log(getChat);
+  //         axios
+  //         .post('/api/adminchat/getclient', getChat)
+  //
+  //         .then(res => {
+  //             this.setState({cchat: res.data})
+  //         })
+  //         .catch(err => this.setState({errors: err.response.data}));
+  //
+  //     }
 
 
 
@@ -128,16 +100,29 @@ componentDidMount() {
               });
 
 
-
-
-
-
           }
 
 
 
+          componentDidUpdate() {
 
+                  const getChat = {
+                    customeremail: this.state.customeremail
+                    //customeremail: "svchaibasa@gmail.comm"
+                  };
+                  //console.log(getChat);
+          //    if(!(this.state.customeremail) === ''){
+                  if((this.state.flag) === 1){
+                  axios
+                  .post('/api/adminchat/getclient', getChat)
 
+                  .then(res => {
+                      this.setState({cchat: res.data})
+                  })
+                  .catch(err => this.setState({errors: err.response.data}));
+
+              }
+            }
 
 
 
