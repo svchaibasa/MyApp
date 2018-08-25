@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class Landing extends Component {
   componentDidMount() {
     if(this.props.auth.isAuthenticated) {
-      this.props.history.push('/landing/AdminDashboard');
+      this.props.history.push('/AdminDashboard');
     }
   }
 
@@ -23,10 +23,10 @@ class Landing extends Component {
 
                 </p>
                 <hr />
-                <Link to="/landing/register" className="btn btn-lg btn-info mr-2">
+                <Link to="/register" className="btn btn-lg btn-info mr-2">
                   Sign Up
                 </Link>
-                <Link to="/landing/login" className="btn btn-lg btn-light">
+                <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
               </div>

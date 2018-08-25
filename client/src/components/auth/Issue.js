@@ -3,40 +3,11 @@ import axios from 'axios';
 import classnames from 'classnames';
 import chatIcon from '../icon/chat-icon.png';
 
+import leftarrow from '../icon/leftarrow.png';
+import cancel from '../icon/cancel.png';
+import { Link } from 'react-router-dom';
+
 class Issue extends Component {
-
-
-
-  constructor(props){
-    super(props);
-
-    this.state = {
-      show:true,
-      app_id: ''
-    };
-    this.toggleDiv = this.toggleDiv.bind(this)
-  }
-  toggleDiv = () => {
-    const { show } = this.state;
-    this.setState({ show : !show})
-  }
-
-
-  render(){
-    var app_id = '5b5454d7079bad399cbe72ba';
-    return(
-
-      <div className="cc">
-      <img src={chatIcon} alt="chatIcon" className="show_hide" id="cc" height="50px" onClick={ this.toggleDiv}/>
-      { this.state.show && <Box app_id={app_id}/> }
-      </div>
-
-    );
-  }
-}
-
-
-class Box extends Component {
 
 
   constructor(props){
@@ -48,13 +19,20 @@ class Box extends Component {
       clientquery: '',
       errors:{},
       isss:[],
-      show:true,
       user_id:'',
-      hidden:false
+      show:true,
+      hidden:true,
+      visible:false
 
     };
+    this.toggleDiv = this.toggleDiv.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  toggleDiv = () => {
+    const { show } = this.state;
+    this.setState({ show : !show})
   }
 
   onChange(e) {
@@ -66,30 +44,24 @@ class Box extends Component {
     e.preventDefault();
 
       const newIssue = {
-        user_id: this.props.app_id,
-        //user_id:"5b5454d7079bad399cbe72ba",  // User Id will be considered as app_id for initial testing
+        user_id: this.props.match.params.handle, // User Id will be considered as app_id
+
         customeremail: this.state.customeremail,
         clientname: this.state.clientname,
         clientquery: this.state.clientquery
 
       };
-      //console.log(newIssue);
+
       axios
 
       .post('/api/tracker/clientissue', newIssue)
 
       .then(res => {
-          this.setState({isss: res.data.requestid, customeremail:'', clientname:'', clientquery: '', show:false, hidden:true})
+          this.setState({isss: res.data.requestid, customeremail:'', clientname:'', clientquery: '', hidden:false, visible:true})
       })
-    //  .then(res => console.log(res.data))
-    //  .then(result => this.setState({data: result.data.requestid}))
+
       .catch(err => this.setState({errors: err.response.data}));
 
-      this.setState({
-        // customeremail: '',
-        // clientname: '',
-        // clientquery: ''
-      });
 
   }
 
@@ -98,22 +70,32 @@ class Box extends Component {
 
 
 
+
+
+
   render(){
-    const { errors } = this.state;
-
-
-
-  //  const dataa = (this.state || {}).isss
-
-
-
-
-
+  const { errors } = this.state;
     return(
 
+      <div>
+      <div className="cc">
+      <img src={chatIcon} alt="chatIcon" className="show_hide" id="cc" height="50px" onClick={ this.toggleDiv}/>
+      </div>
+
+
+
+
+
+{ this.state.show &&
       <div className="slidingDiv">
 
       <div className="mainHeading">
+
+      <div className="arroww">
+      <span><Link className="pp11" to={'/chatapp/'+this.props.match.params.handle } ><img src={leftarrow} alt="leftarrow" className="leftarrow" height="17px"/></Link></span>
+      <span><img src={cancel} alt="cancel" className="cancel" height="12px" onClick={ this.toggleDiv}/></span>
+      </div>
+
         <b><p className="headd">Post your Inquiry / Issue</p></b>
       </div>
 
@@ -121,7 +103,7 @@ class Box extends Component {
 
       <div className="mainArea">
 
-      { this.state.hidden &&
+      { this.state.visible &&
       <div className="ticketShow">
          <div className="ticketNo">You Ticket No is -<b> {this.state.isss} </b> </div>
          <div className="ticketStatus">Status: Open</div>
@@ -137,7 +119,7 @@ class Box extends Component {
   <form className="alignstyle" noValidate onSubmit={this.onSubmit}>
 
 
-{ this.state.show &&
+{ this.state.hidden &&
     <div className="form-group">
 
       <input type="email"
@@ -156,7 +138,7 @@ class Box extends Component {
 
   }
 
-  { this.state.show &&
+  { this.state.hidden &&
 
     <div className="form-group">
 
@@ -175,7 +157,7 @@ class Box extends Component {
 
   }
 
-  { this.state.show &&
+  { this.state.hidden &&
     <div className="form-group">
 
       <textarea
@@ -193,20 +175,10 @@ class Box extends Component {
 
   }
 
-  { this.state.show &&
-    <button type="submit" className="btn btn-success btn-sm">Submit</button>
+  { this.state.hidden &&
+    <button type="submit" disabled={!(this.state.customeremail && this.state.clientname && this.state.clientquery)} className="btn btn-success btn-sm">Submit</button>
   }
   </form>
-
-
-
-
-
-
-
-
-
-
 
 
   </div>
@@ -217,9 +189,13 @@ class Box extends Component {
 
 
       </div>
+}
+      </div>
+
     );
   }
 }
+
 
 
 export default Issue;

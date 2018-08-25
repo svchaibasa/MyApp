@@ -27,17 +27,35 @@
  color:#C0C0C0;
 }
 
+.chat-icon{
+  margin-left: 35px;
+}
 .mainHeading{
   text-align: center;
   width: 100%;
   height: 60px;
-  background-color: 	#4169E1;
-
+  background-color:#4169E1;
 }
 
+.arroww{
+  background: transparent;
+}
+
+.leftarrow{
+  float: left;
+  margin: 10px;
+  cursor: pointer;
+}
+.cancel{
+  float: right;
+  margin: 10px;
+  cursor: pointer;
+}
+
+
 .headd{
-  padding-top: 10px;
-  font-size: 18px;
+  padding-top: 5px;
+  font-size: 14px;
   font-weight: bold;
   color: white;
 }
@@ -87,6 +105,17 @@
   font-size: 13px;
   text-align: justify;
 }
+
+
+.errstatus{
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  font-size: 13px;
+  text-align: justify;
+  margin-left: 70px;
+}
+
 
 .vl {
     border-left: 6px solid green;

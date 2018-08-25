@@ -3,35 +3,11 @@ import axios from 'axios';
 import classnames from 'classnames';
 import chatIcon from '../icon/chat-icon.png';
 
+import leftarrow from '../icon/leftarrow.png';
+import cancel from '../icon/cancel.png';
+import { Link } from 'react-router-dom';
+
 class Track extends Component {
-
-  constructor(props){
-    super(props);
-
-    this.state = { show:true};
-    this.toggleDiv = this.toggleDiv.bind(this)
-  }
-  toggleDiv = () => {
-    const { show } = this.state;
-    this.setState({ show : !show})
-  }
-
-
-  render(){
-    return(
-
-      <div className="cc">
-      <img src={chatIcon} alt="chatIcon" className="show_hide" id="cc" height="50px" onClick={ this.toggleDiv}/>
-      { this.state.show && <Box /> }
-      </div>
-
-    );
-  }
-}
-
-
-class Box extends Component {
-
 
   constructor(props){
     super(props);
@@ -41,55 +17,55 @@ class Box extends Component {
       requestid: '',
       errors:{},
       tttt:[],
-      show:true
+      show:true,
+      hidden:true,
+      notracker:''
 
     };
+    this.toggleDiv = this.toggleDiv.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  toggleDiv = () => {
+    const { show } = this.state;
+    this.setState({ show : !show})
   }
 
 
+    onChange(e) {
+      this.setState({ [e.target.name]: e.target.value });
+    }
 
 
-  onSubmit(e){
 
-    e.preventDefault();
+    onSubmit(e){
 
-      const newTrack = {
-        customeremail: this.state.customeremail,
-        requestid: this.state.requestid
+      e.preventDefault();
 
-      };
-      //console.log(newIssue);
-      axios
+        const newTrack = {
+          customeremail: this.state.customeremail,
+          requestid: this.state.requestid
 
-      .post('/api/tracker/checkstatus', newTrack)
+        };
 
-      .then(res => {
+        axios
 
-        this.setState({ tttt: res.data.status_date, customeremail:'', requestid:'', show:false})
+        .post('/api/tracker/checkstatus', newTrack)
 
+        .then(res => {
 
-      })
-      //.then(res => console.log(res.data))
-    //  .then(result => this.setState({data: result.data.status_date}))
-      .catch(err => this.setState({errors: err.response.data}));
+          this.setState({ tttt: res.data.status_date, customeremail:'', requestid:'', hidden:false})
 
 
-      this.setState({
-        // customeremail: '',
-        // requestid:''
-      });
+        })
+
+      //  .catch(err => console.log({errors: err.response.data}));
+        .catch(err => this.setState({errors: err.response.data}));
 
 
-  }
-
-
+    }
 
 
 
@@ -97,30 +73,51 @@ class Box extends Component {
   render(){
     const { errors } = this.state;
 
-
-
-
-
-
-
-
-
     return(
 
+      <div>
 
+      <div className="cc">
+      <img src={chatIcon} alt="chatIcon" className="show_hide" id="cc" height="50px" onClick={ this.toggleDiv}/>
+
+      </div>
+
+
+
+
+{ this.state.show &&
       <div className="slidingDiv">
 
       <div className="mainHeading">
+
+
+      <div className="arroww">
+      <span><Link className="pp11" to={'/chatapp/'+this.props.match.params.handle } ><img src={leftarrow} alt="leftarrow" className="leftarrow" height="17px"/></Link></span>
+      <span><img src={cancel} alt="cancel" className="cancel" height="12px" onClick={ this.toggleDiv}/></span>
+      </div>
+
+
+
+
+
         <b><p className="headd">Track your Ticket Status</p></b>
       </div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
       <div className="mainArea">
-
-
-
-
 
       {this.state.tttt.map(item =>  <div key={item._id}>
 
@@ -129,11 +126,15 @@ class Box extends Component {
 
         <div className="date">{item.date} </div>  </div>
 
-
-
-
-
       )}
+
+
+
+
+
+      { this.state.hidden &&
+     <div className="errstatus">{errors.notracker}<br/> </div>
+   }
 
 
 
@@ -144,7 +145,7 @@ class Box extends Component {
   <form className="alignstyle" noValidate onSubmit={this.onSubmit}>
 
 
-  { this.state.show &&
+  { this.state.hidden &&
     <div className="form-group">
 
       <input type="email"
@@ -159,11 +160,12 @@ class Box extends Component {
       />
       {errors.customeremail && (<div className="invalid-feedback">{errors.customeremail}</div>)}
 
+
     </div>
 
   }
 
-{ this.state.show &&
+{ this.state.hidden &&
     <div className="form-group">
 
       <input type="text"
@@ -180,17 +182,11 @@ class Box extends Component {
 }
 
 
-{ this.state.show &&
+{ this.state.hidden &&
 
-    <button type="submit" className="btn btn-success btn-sm">Track Status</button>
+    <button type="submit" disabled={!(this.state.customeremail && this.state.requestid)} className="btn btn-success btn-sm">Track Status</button>
   }
   </form>
-
-
-
-
-
-
 
 
 
@@ -203,9 +199,14 @@ class Box extends Component {
 
 
     </div>
+
+}
+      </div>
+
     );
   }
 }
+
 
 
 export default Track;

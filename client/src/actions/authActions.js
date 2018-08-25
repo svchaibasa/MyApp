@@ -8,7 +8,7 @@ import { GET_ERRORS, SET_CURRENT_USER } from './types';
 export const registerUser = (userData, history) => dispatch => {
   axios
    .post('/api/users/register', userData)
-   .then(res => history.push('/landing/login'))
+   .then(res => history.push('/login'))
    .catch(err =>
      dispatch({
        type: GET_ERRORS,
@@ -59,4 +59,10 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   // Set current user to {} user which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
+
+
+
+
+
+
 };

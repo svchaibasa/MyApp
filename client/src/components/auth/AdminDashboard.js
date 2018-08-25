@@ -3,6 +3,10 @@ import axios from 'axios';
 import classnames from 'classnames';
 import user from '../icon/user.png';
 import send from '../icon/send.png';
+
+// import script1 from '../icon/Untitled.png';
+// import script2 from '../icon/Untitled2.png';
+
 import Navbar from '../../components/layout/Navbar';
 
 
@@ -17,7 +21,8 @@ class AdminDashboard extends Component {
       data:[],
       flag:0,
       customeremail: '',
-      chatmsg:''
+      chatmsg:'',
+      show:false
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -33,7 +38,7 @@ class AdminDashboard extends Component {
   handleClick(param, e) {
     // console.log("Parameter", param);
     // console.log("Event", e);
-    this.setState({ customeremail: param, flag:1});
+    this.setState({ customeremail: param, flag:1, show:true});
   }
 
 
@@ -45,6 +50,14 @@ componentDidMount() {
         this.setState({ clist: res.data})
       })
       .catch(err => this.setState({errors: err.response.data}));
+
+
+
+
+
+
+
+
 
 }
 
@@ -122,9 +135,27 @@ componentDidMount() {
                   .catch(err => this.setState({errors: err.response.data}));
 
               }
+
+
+
+
+/* list update test */
+
+              axios
+              .get('/api/adminchat/chatlist')
+              .then(res => {
+                this.setState({ clist: res.data})
+              })
+              .catch(err => this.setState({errors: err.response.data}));
+/* end list update test */
+
             }
 
 
+            onLogoutClick(e) {
+                e.preventDefault();
+                this.props.logoutUser();
+            }
 
 
   render(){
@@ -189,6 +220,7 @@ componentDidMount() {
 
 
               </div>
+                { this.state.show &&
               <div className="col-sm-5">
 
 
@@ -281,9 +313,9 @@ componentDidMount() {
 
 
               </div>
+}
 
-
-
+  { this.state.show &&
               <div className="col-sm-3">
               <div className="chatflow">
                   <img src={user} alt="user" className="usericon" height="30px"/>
@@ -294,9 +326,36 @@ componentDidMount() {
                   </div>
               </div>
 
+
+
               </div>
+            }
             </div>
         </div>
+
+
+
+
+
+        <div className="app_iddd">
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
 
       </div>
     );

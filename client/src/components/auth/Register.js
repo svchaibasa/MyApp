@@ -22,7 +22,7 @@ class Register extends Component {
 
   componentDidMount() {
     if(this.props.auth.isAuthenticated) {
-      this.props.history.push('/landing/AdminDashboard');
+      this.props.history.push('/AdminDashboard');
     }
   }
 
@@ -96,7 +96,7 @@ class Register extends Component {
                     <div className="invalid-feedback">{errors.email}</div>
                   )}
                   <small className="form-text text-muted">
-                    
+
                   </small>
                 </div>
                 <div className="form-group">

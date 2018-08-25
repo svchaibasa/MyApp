@@ -21,9 +21,9 @@ import AdminDashboard from './components/auth/AdminDashboard';
 
 
 
-
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
+//
+// import Navbar from './components/layout/Navbar';
+// import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
@@ -56,7 +56,7 @@ if(localStorage.jwtToken){
     // TODO: Clear current profile
 
     // Redirect to login
-    window.location.href = '/landing/login';
+    window.location.href = '/login';
   }
 }
 
@@ -65,37 +65,36 @@ if(localStorage.jwtToken){
 class App extends Component {
   render() {
     return (
-      <Provider store= { store }>
+
+      <Provider store = { store }>
       <Router>
       <div className="App">
 
 
-        <Route exact path="/" component={ Chat }/>
 
+      <Route exact path="/" component={Landing} />
+      <div className="container">
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
 
-            <Route exact path="/Chatbot" component={Chatbot}/>
-            <Route exact path="/Issue" component={Issue}/>
-            <Route exact path="/Track" component={Track}/>
-            <Route exact path="/Faq" component={Faq}/>
+          <Route exact path="/AdminDashboard" component={AdminDashboard} />
 
-
-
-
-
+      </div>
 
 
 
 
-            <Route exact path="/Landing" component={Navbar}/>
-            <Route exact path="/Landing" component={ Landing }/>
-            <Route exact path="/Landing" component={Footer}/>
 
 
-          <div className="container">
-            <Route exact path="/Landing/Register" component={Register}/>
-            <Route exact path="/Landing/Login" component={Login}/>
-            <Route exact path="/Landing/AdminDashboard" component={AdminDashboard}/>
-          </div>
+                  <Route exact path="/chatapp/:handle" component={ Chat }/>
+                  <Route exact path="/chatapp/Chatbot/:handle" component={Chatbot}/>
+                  <Route exact path="/chatapp/Issue/:handle" component={Issue}/>
+                  <Route exact path="/chatapp/Track/:handle" component={Track}/>
+                  <Route exact path="/chatapp/Faq/:handle" component={Faq} />
+
+
+
+
 
 
       </div>

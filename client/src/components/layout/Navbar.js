@@ -26,9 +26,14 @@ class Navbar extends Component {
             className="rounded-circle"
             src={user.avatar}
             alt={user.name}
+
+
+
             style={{ width: '25px', marginRight: '5px' }}
             title="You must have a Gravatar connected to your email to display an image"
             />{' '}
+
+
             Logout
           </a>
         </li>
@@ -38,12 +43,12 @@ class Navbar extends Component {
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <Link className="nav-link" to="/landing/register">
+          <Link className="nav-link" to="/register">
             Sign Up
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/landing/login">
+          <Link className="nav-link" to="/login">
             Login
           </Link>
         </li>
@@ -54,7 +59,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
-          <Link className="navbar-brand" to="/landing">
+          <Link className="navbar-brand" to="/">
             Prackr
           </Link>
           <button
@@ -69,10 +74,14 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/landing/profiles">
+                <Link className="nav-link" to="/">
                   {' '}
-                  Developers
+                    app_id : {user.id}
                 </Link>
+
+
+
+
               </li>
             </ul>
             {isAuthenticated ? authLinks : guestLinks}
