@@ -217,6 +217,7 @@ router.post('/checkstatus', (req, res) => {
       if(!tracker){
         errors.notracker = 'Ticket not Found!';
         res.status(404).json(errors);  // Not found error 404
+
       }
 
       if(tracker){
@@ -224,7 +225,7 @@ router.post('/checkstatus', (req, res) => {
           res.json(tracker);  // found 200
       }
     })
-    .catch(err => res.status(404).json({tracker: 'Ticket not Found!'}));
+    .catch(err => res.status(404).json({notracker: 'Ticket not Found!'}));
 });
 
 

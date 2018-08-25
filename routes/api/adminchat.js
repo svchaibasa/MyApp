@@ -77,8 +77,6 @@ router.post('/reply', passport.authenticate('jwt', {session: false}), (req, res)
       // @access private
 
       router.get('/chatlist', passport.authenticate('jwt', {session: false}), (req, res) => {
-
-
       // Search for user id and user id
         Chat.find({user: req.user.id})
 
@@ -114,7 +112,17 @@ router.post('/reply', passport.authenticate('jwt', {session: false}), (req, res)
 
 
 
-            /// @route  POST api/adminchat/chatlist
+
+
+
+
+
+
+
+
+
+
+            /// @route  POST api/adminchat/getclient
             // @desc   get get client chat
             // @access private
 

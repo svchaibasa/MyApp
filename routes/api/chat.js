@@ -93,7 +93,11 @@ router.post('/startmsg', async (req, res) => {
             const newChat = new Chat({
               user: req.body.user_id,
               customeremail: req.body.customeremail,
-              clientname : req.body.clientname
+              clientname : req.body.clientname,
+              chat_msg : {
+                chatmsg : req.body.chatmsg,
+                chatby : "0"
+           }
           });
 
             newChat
@@ -163,6 +167,7 @@ router.post('/startmsg', async (req, res) => {
               }
 
                 })
+
                   .catch(err => res.status(404).json({chat: 'Admin or Client not found!'}));
                 });
 
